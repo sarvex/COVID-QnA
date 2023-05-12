@@ -7,10 +7,7 @@ import pandas as pd
 
 class MSTranslator():
     def __init__(self, key = None, endpoint = None, lang = None):
-        if key:
-            self.azure_key = key
-        else:
-            self.azure_key = os.environ['AZURE_TRANSLATE_KEY']
+        self.azure_key = key if key else os.environ['AZURE_TRANSLATE_KEY']
         self.azure_endpoint = endpoint
         self.lang = lang
         self.url = f"{self.azure_endpoint}/translate?api-version=3.0&to={self.lang}"
@@ -24,10 +21,7 @@ class MSTranslator():
         body = [{'text': text.strip()}]
         request = requests.post(self.url, headers = self.headers, json = body)
         response = request.json()
-        trans_text = ""
-        if len(response) > 0:
-            trans_text = response[0]['translations'][0]['text']
-        return trans_text
+        return response[0]['translations'][0]['text'] if len(response) > 0 else ""
 
 
 def main():

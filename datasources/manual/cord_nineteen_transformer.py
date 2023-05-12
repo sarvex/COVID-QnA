@@ -31,10 +31,7 @@ print('Total articles found in Metadata are: ', len(df)) #length around 45774 ar
 
 # Get file names for SHAs matching from commercial available dir
 dir_to_walk = os.listdir(os.path.join(ROOT,SUBSET_CORD_DATA)) #switch out CORD-19 data subset here
-sha_list = []
-for item in dir_to_walk:
-    sha_list.append(item.split('.')[0]) #strip out '.json'
-
+sha_list = [item.split('.')[0] for item in dir_to_walk]
 # Now to extract out the relevant SHA data from metadata
 custom_df = df[df['sha'].isin(sha_list)]
 # print(len(custom_df)) #might be a count less than the number found in metadata, some SHA cells are empty
@@ -56,11 +53,12 @@ for row in tqdm(custom_df.iterrows()):
     article_text = []
     with open(os.path.join(ROOT, custom_df, row[1].sha + '.json')) as in_file:
         json_data = json.load(in_file)
-        for idx in range(len(json_data["body_text"])):
-            article_text.append("{}".format(json_data["body_text"][idx]["text"]))
-    
+        article_text.extend(
+            f'{json_data["body_text"][idx]["text"]}'
+            for idx in range(len(json_data["body_text"]))
+        )
     formatted_article_text = '\n\n'.join(article_text)
-    
+
     file_to_write = row[1].sha + '.txt'
     text_to_write = f"{row[1].title}\n\n" \
                         f"{row[1].url}\n\n" \
@@ -71,7 +69,7 @@ for row in tqdm(custom_df.iterrows()):
                         f"License: {row[1].license}\n\n" \
                         f"Abstract: {row[1].abstract}\n\n" \
                         f"Text: {formatted_article_text}"
-    
+
     with open(os.path.join(ROOT, OUTPUT_DIR, file_to_write), 'w') as out_file:
         out_file.write(text_to_write.strip())
 

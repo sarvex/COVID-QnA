@@ -180,15 +180,13 @@ def ask(request: Query):
             langs_in_faq_count += 1
 
     # if majority of questions is english, send questions to english model
-    if english_question_count > int(len(request.questions) / 2):
+    if english_question_count > len(request.questions) // 2:
         if not request.filters:
             request.filters = {}
         request.filters["lang"] = "en"
         return ask_faq(2, request)
-    # send questions to general model
-    elif langs_in_faq_count > int(len(request.questions) / 2):
+    elif langs_in_faq_count > len(request.questions) // 2:
         return ask_faq(1, request)
-    # detect special languages
     else:
         for i,question in enumerate(request.questions):
             cld2_lang = request_langs[i]
@@ -228,8 +226,7 @@ def ask_faq(model_id: int, request: Query):
         logger.info({"request": request.json(), "results": results})
 
         # remember questions with result in the autocomplete
-        if len(results) > 0:
-            if len(question) > 10:
-                addQuestionToAutocomplete(question)
+        if results and len(question) > 10:
+            addQuestionToAutocomplete(question)
 
         return {"results": results}

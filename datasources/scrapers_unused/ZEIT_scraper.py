@@ -47,7 +47,9 @@ class CovidScraper(scrapy.Spider):
       columns["question"].append(question)
       columns["answer"].append(answer)
       columns["answer_html"].append(answer_html)
-      columns["link"].append("https://www.zeit.de/wissen/gesundheit/2020-02/coronavirus-sars-cov-2-risiko-symptome-schutz-rechte-faq#" + link_id)
+      columns["link"].append(
+          f"https://www.zeit.de/wissen/gesundheit/2020-02/coronavirus-sars-cov-2-risiko-symptome-schutz-rechte-faq#{link_id}"
+      )
 
     today = date.today()
 

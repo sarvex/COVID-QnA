@@ -32,12 +32,11 @@ class CovidScraper(scrapy.Spider):
             question = q.get()
             answer = ""
             answer_html = ""
-            for selector in response.xpath("//div/h3[contains(text(), '" + question + "')]/following-sibling::*"):
+            for selector in response.xpath(f"//div/h3[contains(text(), '{question}')]/following-sibling::*"):
                 if "h3" in selector.get():
                     break
-                else:
-                    answer += " ".join(selector.css(ANSWER_SELECTOR).getall()).strip() + "\n"
-                    answer_html += " ".join(selector.css(ANSWER_HTML_SELECTOR).getall()).strip()
+                answer += " ".join(selector.css(ANSWER_SELECTOR).getall()).strip() + "\n"
+                answer_html += " ".join(selector.css(ANSWER_HTML_SELECTOR).getall()).strip()
 
             columns['question'].append(question)
             columns['answer'].append(answer)

@@ -17,11 +17,11 @@ class TfidfTrainer():
         self.vectorizer = None
 
     def preprocess_corpus(self, corpus = None):
-        if corpus:
-            pcorpus = self.preprocessor.preprocess_sp(corpus)
-        else:
-            pcorpus = self.preprocessor.sentencepiece_apply(self.preprocessor.corpus)
-        return pcorpus
+        return (
+            self.preprocessor.preprocess_sp(corpus)
+            if corpus
+            else self.preprocessor.sentencepiece_apply(self.preprocessor.corpus)
+        )
 
     def train_model(self, corpus):
         # creating vocabulary using uni-gram and bi-gram

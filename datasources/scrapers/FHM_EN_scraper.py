@@ -58,10 +58,10 @@ class CovidScraper(scrapy.Spider):
                 responseParagraphPaths = qnaPath.xpath('.//div[@class="textbody"]')
 
 
-                response = ""
-                for respParaPath in responseParagraphPaths:
-                    response += " ".join(respParaPath.xpath('.//text()').getall()) + "\n\n"
-
+                response = "".join(
+                    " ".join(respParaPath.xpath('.//text()').getall()) + "\n\n"
+                    for respParaPath in responseParagraphPaths
+                )
                 response = response.strip()
 
                 columns["question"].append(question[0])

@@ -9,7 +9,7 @@ from scrapy.crawler import CrawlerProcess
 
 logger = logging.getLogger(__name__)
 
-PATH = os.getcwd() + "/scrapers"
+PATH = f"{os.getcwd()}/scrapers"
 RESULTS = []
 MISSED = []
 
@@ -21,18 +21,14 @@ class Pipeline(object):
         question = item['question'][index].strip()
         if self.questionsOnly and not question.endswith("?"):
             return False
-        if len(item['answer'][index].strip()) == 0:
-            return False
-        return True
+        return len(item['answer'][index].strip()) != 0
 
     def process_item(self, item, spider):
         if len(item['question']) == 0:
             logger.error("Scraper '" + spider.name + "' provided zero results!")
             MISSED.append(spider.name)
             return
-        validatedItems = {}
-        for key, values in item.items():
-            validatedItems[key] = []
+        validatedItems = {key: [] for key, values in item.items()}
         for i in range(len(item['question'])):
             if not self.filter(item, i):
                 continue

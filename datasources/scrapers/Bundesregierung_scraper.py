@@ -36,11 +36,10 @@ class CovidScraper(scrapy.Spider):
             answer = []
             answer_html = []
             for elm in following_siblings:
-                if elm.root.tag == 'p' and 'navToTop' not in elm.root.classes:
-                    answer += elm.css("::text").getall()
-                    answer_html += [elm.get()]
-                else:
+                if elm.root.tag != 'p' or 'navToTop' in elm.root.classes:
                     break
+                answer += elm.css("::text").getall()
+                answer_html += [elm.get()]
             answer = "".join(answer).replace('\n', '').strip()
             answer_html = " ".join(answer_html).strip()
 

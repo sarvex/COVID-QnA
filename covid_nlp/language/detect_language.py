@@ -44,8 +44,7 @@ class LanguageDetector():
     def detect_freq_lang(self, text, n = 3):
         import cld3  # requires protobuf
         pred = cld3.get_frequent_languages(text, num_langs = n)
-        pred_list = [ (p.language, 100*p.probability) for p in pred ]
-        return pred_list
+        return [ (p.language, 100*p.probability) for p in pred ]
 
 
 def main():

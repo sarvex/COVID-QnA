@@ -27,9 +27,13 @@ class CovidScraper(scrapy.Spider):
         }
 
         for x in response.xpath('//div[@class="alt-accordion-box-box"]/@id').extract():
-            question_text = response.xpath(str('//*[@id="' + x + '"]/h2/text()')).extract()[0]
-            answer_text = " ".join(response.xpath(str('//*[@id="' + x + '"]/div/p')).xpath('string()').extract())
-            answer_html = " ".join(response.xpath(str('//*[@id="' + x + '"]/div/p')).extract())
+            question_text = response.xpath(str(f'//*[@id="{x}"]/h2/text()')).extract()[0]
+            answer_text = " ".join(
+                response.xpath(str(f'//*[@id="{x}"]/div/p'))
+                .xpath('string()')
+                .extract()
+            )
+            answer_html = " ".join(response.xpath(str(f'//*[@id="{x}"]/div/p')).extract())
 
             columns['question'].append(question_text)
             columns['answer'].append(answer_text)

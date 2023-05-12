@@ -38,9 +38,9 @@ class CovidScraper(scrapy.Spider):
             answer_html = " ".join(answer_html).strip()
 
             # if no question, answer belongs to last question. ("How can I avoid the risk of infection?")
-            if (question == ''):
-                columns["answer"][-1] += ' ' + answer
-                columns["answer_html"][-1] += ' ' + answer_html
+            if not question:
+                columns["answer"][-1] += f' {answer}'
+                columns["answer_html"][-1] += f' {answer_html}'
                 continue
 
             # add question-answer pair to data dictionary

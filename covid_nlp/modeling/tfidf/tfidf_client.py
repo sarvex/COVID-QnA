@@ -23,11 +23,10 @@ class TfidfEvaluator():
 
     def process_string(self, mystring):
         corpus = self.model.preprocess_corpus([mystring])
-        corpus_vectors = self.model.vectorizer.transform([corpus[0]])
-        return corpus_vectors
+        return self.model.vectorizer.transform([corpus[0]])
 
     def find_best_matches(self, cos_list, top_n = 10):
-        cos_list_enumerated = [ (i, cos_sim) for i, cos_sim in enumerate(cos_list) ]
+        cos_list_enumerated = list(enumerate(cos_list))
         cos_list_enumerated.sort(key=lambda x:x[1], reverse=True)
         return cos_list_enumerated[:top_n]
 

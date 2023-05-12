@@ -8,11 +8,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 from covid_nlp.eval import eval_question_similarity
 
 def eval_pretrained_transformers(eval_file, lang, models, pooling_methods, extraction_layers):
+    log_to_mlflow = True
     for model_name in models:
         for pooling_method in pooling_methods:
             for extraction_layer in extraction_layers:
                 experiment_name = model_name
-                log_to_mlflow = True
                 params = {"pooling_method": pooling_method,
                           "extraction_layer": extraction_layer}
 

@@ -2,6 +2,7 @@
 This example loads the pre-trained bert-base-nli-mean-tokens models from the server.
 It then fine-tunes this model for some epochs on the STS benchmark dataset.
 """
+
 from torch.utils.data import DataLoader
 import math
 from sentence_transformers import SentenceTransformer,  SentencesDataset, LoggingHandler, losses
@@ -23,7 +24,10 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
 model_name = "../saved_models"
 train_batch_size = 32
 num_epochs = 4
-model_save_path = 'output/quora_continue_training-'+model_name+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+model_save_path = (
+    f'output/quora_continue_training-{model_name}-'
+    + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+)
 sts_reader = STSDataReader('../data/quora', normalize_scores=True, s1_col_idx=4, s2_col_idx=5, score_col_idx=6, max_score=1)
 
 # Load a pre-trained sentence transformer model
@@ -44,7 +48,7 @@ evaluator = EmbeddingSimilarityEvaluator(dev_dataloader)
 
 # Configure the training. We skip evaluation in this example
 warmup_steps = math.ceil(len(train_data)*num_epochs/train_batch_size*0.1) #10% of train data for warm-up
-logging.info("Warmup-steps: {}".format(warmup_steps))
+logging.info(f"Warmup-steps: {warmup_steps}")
 
 
 # Train the model

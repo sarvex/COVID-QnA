@@ -57,11 +57,10 @@ def ask(search: str):
     })
 
     resultCount = len(interim['hits']['hits'])
-    result = []
-    for i in range(resultCount):
-        result.append(interim['hits']['hits'][i]['_source']['phrase'])
-
-
+    result = [
+        interim['hits']['hits'][i]['_source']['phrase']
+        for i in range(resultCount)
+    ]
     lang, score = langid.classify(search)
 
     return {

@@ -36,8 +36,9 @@ SEARCH_FIELD_NAME = os.getenv("SEARCH_FIELD_NAME", "question")
 EMBEDDING_FIELD_NAME = os.getenv("EMBEDDING_FIELD_NAME", "question_emb")
 EMBEDDING_DIM = os.getenv("EMBEDDING_DIM", None)
 
-EXCLUDE_META_DATA_FIELDS = os.getenv("EXCLUDE_META_DATA_FIELDS", "['question_emb']")
-if EXCLUDE_META_DATA_FIELDS:
+if EXCLUDE_META_DATA_FIELDS := os.getenv(
+    "EXCLUDE_META_DATA_FIELDS", "['question_emb']"
+):
     EXCLUDE_META_DATA_FIELDS = ast.literal_eval(EXCLUDE_META_DATA_FIELDS)
 
 # SIL language detection API

@@ -57,10 +57,10 @@ class CovidScraper(scrapy.Spider):
                 responseParagraphPaths = qnaPath.xpath('.//div[@class="textbody"]')
 
 
-                response = ""
-                for respParaPath in responseParagraphPaths:
-                    response += " ".join(respParaPath.xpath('.//text()').getall()) + "\n\n"
-
+                response = "".join(
+                    " ".join(respParaPath.xpath('.//text()').getall()) + "\n\n"
+                    for respParaPath in responseParagraphPaths
+                )
                 #Cleanup text. It contains a link and a date updated in the text
                 response = response.strip()
                 splitted = response.split("\n")
